@@ -1,3 +1,5 @@
+// Page with an empty form for adding an application.
+
 import type { Metadata } from "next";
 import { createJobAction } from "@/app/actions";
 import { JobForm } from "@/components/JobForm";

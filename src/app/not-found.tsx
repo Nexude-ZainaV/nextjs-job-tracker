@@ -1,3 +1,5 @@
+// 404 page. Also rendered when a page calls notFound() for a missing job.
+
 import Link from "next/link";
 
 export default function NotFound() {

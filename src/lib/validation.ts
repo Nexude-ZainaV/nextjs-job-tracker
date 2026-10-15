@@ -1,3 +1,5 @@
+// Zod schema for a job, shared by the form Server Actions and the JSON API.
+
 import { z } from "zod";
 
 export const STATUSES = ["wishlist", "applied", "interview", "offer", "rejected"] as const;
@@ -37,6 +39,7 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
+// Catches dates like 2026-02-30, which Date would quietly roll over into March.
 function isRealDate(value: string): boolean {
   const date = new Date(`${value}T00:00:00Z`);
   return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(value);
@@ -78,6 +81,7 @@ export function validateJob(input: unknown): ValidationResult {
   const result = jobInputSchema.safeParse(input);
   if (result.success) return { success: true, data: result.data };
 
+  // Keep the first message per field; that's all the form shows.
   const errors: FieldErrors = {};
   for (const issue of result.error.issues) {
     const field = issue.path[0] as keyof JobInput | undefined;

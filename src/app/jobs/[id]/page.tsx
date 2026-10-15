@@ -1,3 +1,5 @@
+// Job detail page: edit form, delete button and a link to the posting.
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,6 +11,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { getDb } from "@/lib/db";
 import { getJob, parseId } from "@/lib/jobs";
 
+// Shared by generateMetadata and the page; a bad or unknown id renders not-found.tsx.
 async function loadJob(idParam: string) {
   await connection(); // node:sqlite is synchronous: opt out of prerendering explicitly
   const id = parseId(idParam);

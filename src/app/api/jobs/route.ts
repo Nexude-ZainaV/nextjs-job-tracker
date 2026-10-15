@@ -1,3 +1,5 @@
+// REST collection endpoint: list jobs (with filters) and create a job.
+
 import type { NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
 import { createJob, listJobs } from "@/lib/jobs";

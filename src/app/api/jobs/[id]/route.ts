@@ -1,3 +1,5 @@
+// REST item endpoint: read, replace and delete one job by id.
+
 import type { NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
 import { deleteJob, getJob, parseId, updateJob } from "@/lib/jobs";

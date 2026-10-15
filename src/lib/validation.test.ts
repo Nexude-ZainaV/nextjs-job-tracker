@@ -1,3 +1,5 @@
+// Tests for validateJob: defaults, empty form fields, numbers, and rejected input. Run: npm test
+
 import { describe, expect, it } from "vitest";
 import { validateJob } from "./validation";
 

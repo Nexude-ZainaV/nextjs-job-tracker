@@ -1,9 +1,12 @@
+// Repository tests against a fresh in-memory SQLite database. Run: npm test
+
 import type { DatabaseSync } from "node:sqlite";
 import { beforeEach, describe, expect, it } from "vitest";
 import { openDatabase } from "./db";
 import { createJob, deleteJob, getJob, jobStats, listJobs, parseId, updateJob } from "./jobs";
 import type { JobInput } from "./validation";
 
+// A valid JobInput; tests override only the fields they care about.
 const input = (overrides: Partial<JobInput> = {}): JobInput => ({
   company: "Acme",
   role: "Engineer",

@@ -1,3 +1,5 @@
+// Dashboard: status counts, response rate, and the filtered list of applications.
+
 import Link from "next/link";
 import { StatusBadge } from "@/components/StatusBadge";
 import { getDb } from "@/lib/db";
@@ -6,6 +8,7 @@ import { isStatus, STATUSES, STATUS_LABELS } from "@/lib/validation";
 
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
+// "$60,000 – $80,000", "from $60,000", "up to $80,000", or "" when neither is set.
 function salaryRange(min?: number, max?: number): string {
   if (min === undefined && max === undefined) return "";
   if (min !== undefined && max !== undefined) return `${money.format(min)} – ${money.format(max)}`;
@@ -103,6 +106,7 @@ export default async function DashboardPage(props: PageProps<"/">) {
   );
 }
 
+// One tile in the summary row.
 function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">

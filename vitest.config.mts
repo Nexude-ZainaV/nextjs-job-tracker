@@ -1,3 +1,4 @@
+// Vitest config: the @ alias, a stub for server-only, and an in-memory database.
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 

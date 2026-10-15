@@ -1,3 +1,5 @@
+// Coloured pill for a job status, with light and dark variants.
+
 import { STATUS_LABELS, type Status } from "@/lib/validation";
 
 const STATUS_STYLES: Record<Status, string> = {

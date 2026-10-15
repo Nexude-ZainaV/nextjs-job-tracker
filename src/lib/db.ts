@@ -1,3 +1,4 @@
+// SQLite connection (node:sqlite) and the jobs table schema. Server only.
 import "server-only";
 
 import { mkdirSync } from "node:fs";
@@ -6,6 +7,8 @@ import { DatabaseSync } from "node:sqlite";
 
 const DEFAULT_DB_PATH = "data/jobs.db";
 
+// The CHECK repeats STATUSES so the database itself rejects an unknown status.
+// The index serves the dashboard's "filter by status, newest first" list.
 export const SCHEMA = `
   CREATE TABLE IF NOT EXISTS jobs (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,6 +27,7 @@ export const SCHEMA = `
   CREATE INDEX IF NOT EXISTS ix_jobs_status ON jobs (status, updated_at);
 `;
 
+// Opens a file database (creating its folder) or ":memory:" for tests, and applies the schema.
 export function openDatabase(path: string): DatabaseSync {
   if (path !== ":memory:") mkdirSync(dirname(path), { recursive: true });
   const db = new DatabaseSync(path);

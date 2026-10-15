@@ -1,5 +1,7 @@
 "use server";
 
+// Server Actions behind the create, edit and delete forms.
+
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db";
@@ -13,6 +15,7 @@ export interface FormState {
   values?: Record<string, string>;
 }
 
+// Text fields only; File entries are dropped.
 function formValues(formData: FormData): Record<string, string> {
   return Object.fromEntries([...formData.entries()].filter(([, v]) => typeof v === "string")) as Record<string, string>;
 }

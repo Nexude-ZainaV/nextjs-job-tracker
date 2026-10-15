@@ -1,4 +1,4 @@
-# Job Application Tracker (Next.js 16)
+# Job application tracker (Next.js 16)
 
 [![CI](https://github.com/Nexude-ZainaV/nextjs-job-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/Nexude-ZainaV/nextjs-job-tracker/actions/workflows/ci.yml)
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs)
@@ -7,13 +7,14 @@
 ![Zod](https://img.shields.io/badge/validation-Zod%204-3E67B1)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-Track job applications from wishlist to offer: a dashboard with counts and response
-rate, search and status filters, and create/edit/delete forms. Built with the App
-Router, React Server Components, Server Actions, Route Handlers and SQLite.
+A tracker for job applications, from wishlist to offer. There's a
+dashboard with counts and a response rate, search and status filters, and forms to
+create, edit and delete. It uses the App Router, React Server Components, Server
+Actions, Route Handlers and SQLite.
 
 ![Dashboard with status counts and application cards](docs/screenshot-dashboard.png)
 
-## What it demonstrates
+## What's in it
 
 | Concept | Where |
 |---|---|
@@ -30,14 +31,13 @@ Router, React Server Components, Server Actions, Route Handlers and SQLite.
 
 ## Security notes
 
-- **Server Actions are public endpoints**: each one validates its own input rather than
+- Server Actions are public endpoints, so each one validates its own input instead of
   trusting the form.
-- **Stored XSS**: job links must be `http:` or `https:`, so a `javascript:` URL can
-  never be saved and clicked later. External links use `rel="noopener noreferrer"`.
-- **SQL injection**: every query uses bound parameters; `LIKE` wildcards in searches
-  are escaped.
-- `import "server-only"` in the database module makes an accidental client import
-  a build error.
+- Job links must be `http:` or `https:`. A `javascript:` URL can never be saved and
+  clicked later (stored XSS), and external links use `rel="noopener noreferrer"`.
+- Every query uses bound parameters, and `LIKE` wildcards in searches are escaped.
+- `import "server-only"` in the database module turns an accidental client import
+  into a build error.
 - Ids from the URL are parsed strictly (`parseId`), so `/jobs/abc` is a clean 404.
 
 ## REST API
@@ -56,15 +56,16 @@ Statuses: `wishlist`, `applied`, `interview`, `offer`, `rejected`.
 
 ## Run it
 
-Requires **Node.js 22.13+** (for the built-in `node:sqlite` module; Node prints an
-"experimental" warning for it, which is expected).
+You need Node.js 22.13 or newer for the built-in `node:sqlite` module. Node prints an
+"experimental" warning when it loads; that's expected.
 
 ```bash
 npm install
 npm run dev            # http://localhost:3000
 ```
 
-Data is stored in `data/jobs.db` (git-ignored); set `JOBS_DB_PATH` to change it.
+Data is stored in `data/jobs.db`, which is git-ignored. Set `JOBS_DB_PATH` to put it
+somewhere else.
 
 | Script | What it does |
 |---|---|
@@ -75,11 +76,11 @@ Data is stored in `data/jobs.db` (git-ignored); set `JOBS_DB_PATH` to change it.
 
 ## Deploying
 
-This runs anywhere that keeps a writable disk (a VPS, a container, Railway, Fly.io).
-Serverless hosts such as Vercel have a read-only, short-lived filesystem, so a
-SQLite *file* would not persist there. For that, swap `openDatabase` in
-[src/lib/db.ts](src/lib/db.ts) for a hosted database (Turso/libSQL, Neon Postgres);
-the repository functions are the only other code that touches SQL.
+This runs anywhere with a writable disk that sticks around: a VPS, a container,
+Railway, Fly.io. Serverless hosts such as Vercel have a read-only, short-lived
+filesystem, so a SQLite file wouldn't persist there. To deploy on one, swap
+`openDatabase` in [src/lib/db.ts](src/lib/db.ts) for a hosted database (Turso/libSQL,
+Neon Postgres). The repository functions are the only other code that touches SQL.
 
 ## License
 

@@ -1,3 +1,5 @@
+// Route handler tests for /api/jobs and /api/jobs/[id]: status codes, headers, bodies. Run: npm test
+
 import { NextRequest } from "next/server";
 import { beforeEach, describe, expect, it } from "vitest";
 import { DELETE, GET as getOne, PUT } from "./[id]/route";

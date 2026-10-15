@@ -1,3 +1,5 @@
+// Root layout: font, top bar with the home and "New application" links, page container.
+
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";

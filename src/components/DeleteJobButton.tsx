@@ -1,5 +1,7 @@
 "use client";
 
+// A client component only for the confirm() prompt; the delete itself is a Server Action.
+
 import { deleteJobAction } from "@/app/actions";
 
 export function DeleteJobButton({ id, label }: { id: number; label: string }) {

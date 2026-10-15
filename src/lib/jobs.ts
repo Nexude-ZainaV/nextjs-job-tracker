@@ -1,3 +1,5 @@
+// Repository for the jobs table: every query against it lives here.
+
 import type { DatabaseSync, SQLInputValue } from "node:sqlite";
 import { STATUSES, type JobInput, type Status } from "./validation";
 
@@ -34,6 +36,7 @@ type JobRow = {
   updated_at: string;
 };
 
+// snake_case row -> camelCase Job; NULL salary becomes undefined, NULL date becomes "".
 function toJob(row: JobRow): Job {
   return {
     id: row.id,
@@ -51,6 +54,7 @@ function toJob(row: JobRow): Job {
   };
 }
 
+// The reverse for writes: a missing salary or date is stored as NULL.
 function toParams(input: JobInput) {
   return {
     company: input.company,
@@ -77,6 +81,7 @@ export function listJobs(db: DatabaseSync, filters: JobFilters = {}): Job[] {
   const search = filters.search?.trim();
   if (search) {
     where.push("(company LIKE :search ESCAPE '\\' OR role LIKE :search ESCAPE '\\' OR location LIKE :search ESCAPE '\\')");
+    // Escape backslash, % and _ so a search for "100%" is literal (see ESCAPE '\' above).
     params.search = `%${search.replace(/[\\%_]/g, "\\$&")}%`;
   }
   const sql = `SELECT * FROM jobs ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY updated_at DESC, id DESC`;
@@ -114,6 +119,7 @@ export function deleteJob(db: DatabaseSync, id: number): boolean {
   return db.prepare("DELETE FROM jobs WHERE id = ?").run(id).changes > 0;
 }
 
+// Counts per status in one GROUP BY; statuses with no rows still show as 0.
 export function jobStats(db: DatabaseSync): JobStats {
   const rows = db.prepare("SELECT status, COUNT(*) AS n FROM jobs GROUP BY status").all() as { status: Status; n: number }[];
   const byStatus = Object.fromEntries(STATUSES.map((s) => [s, 0])) as Record<Status, number>;
@@ -129,7 +135,8 @@ export function jobStats(db: DatabaseSync): JobStats {
   };
 }
 
-/** Parses a route or query id; anything but a positive integer is "not found". */
+/** Parses a route or query id; anything but a positive integer is "not found".
+ *  Ten digits at most keeps the value well inside Number's safe integer range. */
 export function parseId(value: string): number | undefined {
   return /^[1-9]\d{0,9}$/.test(value) ? Number(value) : undefined;
 }

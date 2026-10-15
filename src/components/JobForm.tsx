@@ -1,5 +1,7 @@
 "use client";
 
+// The create/edit form, with per-field errors and a pending state on submit.
+
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import type { FormState } from "@/app/actions";
@@ -21,6 +23,7 @@ const inputClass =
  */
 export function JobForm({ action, job, submitLabel }: JobFormProps) {
   const [state, formAction] = useActionState(action, { errors: {} });
+  // After a failed submit show what was typed; otherwise the saved job's value.
   const value = (field: string, fallback: string | number | undefined) => state.values?.[field] ?? fallback ?? "";
 
   return (
@@ -71,6 +74,8 @@ export function JobForm({ action, job, submitLabel }: JobFormProps) {
   );
 }
 
+// Label, control and an error line. The error <p> always renders so aria-describedby
+// has a target and the layout doesn't jump when a message appears.
 function Field({ label, name, error, children }: { label: string; name: string; error?: string; children: React.ReactNode }) {
   return (
     <div className="grid gap-1">
